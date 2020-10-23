@@ -25,6 +25,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pages" asp-action="Index">Pages</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Read" asp-action="Index">Read</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -46,6 +49,10 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- include summernote css/js -->
+    <link href="~/css/summernote.min.css" rel="stylesheet" />
+    <script src="~/js/summernote.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
