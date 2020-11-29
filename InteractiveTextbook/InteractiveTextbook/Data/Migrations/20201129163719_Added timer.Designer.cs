@@ -4,14 +4,16 @@ using InteractiveTextbook.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace InteractiveTextbook.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201129163719_Added timer")]
+    partial class Addedtimer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,9 +56,6 @@ namespace InteractiveTextbook.Data.Migrations
 
                     b.Property<int>("PageId")
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("RecordCreatedOn")
-                        .HasColumnType("datetime2");
 
                     b.Property<TimeSpan>("TimeElapsed")
                         .HasColumnType("time");

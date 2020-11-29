@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using InteractiveTextbook.Data;
 using InteractiveTextbook.Data.Entities;
+using InteractiveTextbook.Models;
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
 
 namespace InteractiveTextbook.Controllers
 {
@@ -14,9 +18,12 @@ namespace InteractiveTextbook.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public PagesController(ApplicationDbContext context)
+        private readonly IWebHostEnvironment _env;
+
+        public PagesController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         // GET: Pagess
@@ -57,16 +64,29 @@ namespace InteractiveTextbook.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PageNumber,Text,TextbookId")] Page Pages)
+        public async Task<IActionResult> Create([Bind("PageNumber,Text,TextbookId,FormFile")] PageViewModel page)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(Pages);
+                if (page.FormFile != null)
+                {
+                    string fileName = Path.GetRandomFileName() + ".wav";
+                    string filePath = $"{_env.WebRootPath}/AudioFiles/{fileName}";
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        page.FormFile.CopyTo(stream);
+                    }
+                    page.AudioPath = fileName;
+                }
+
+                var pageToAdd = PageViewModel.ConvertToModel(page);
+
+                _context.Add(pageToAdd);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TextbookId"] = new SelectList(_context.Textbooks, "Id", "Name", Pages.TextbookId);
-            return View(Pages);
+            ViewData["TextbookId"] = new SelectList(_context.Textbooks, "Id", "Name", page.TextbookId);
+            return View(page);
         }
 
         // GET: Pagess/Edit/5
@@ -102,6 +122,7 @@ namespace InteractiveTextbook.Controllers
             {
                 try
                 {
+                    Pages.AudioPath = _context.Pages.AsNoTracking().FirstOrDefault(x => x.Id == Pages.Id)?.AudioPath; //Remove when audio files edit implemented
                     _context.Update(Pages);
                     await _context.SaveChangesAsync();
                 }

@@ -1,4 +1,4 @@
-﻿@model InteractiveTextbook.Data.Entities.Page
+﻿@model InteractiveTextbook.Models.PageViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-10">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="PageNumber" class="control-label"></label>
@@ -27,9 +27,15 @@
                 <select asp-for="TextbookId" class="form-control" asp-items="ViewBag.TextbookId"></select>
             </div>
             <div class="form-group">
+                <label asp-for="FormFile"></label>
+
+                <input asp-for="FormFile" type="file" />
+                <span asp-validation-for="FormFile"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
-        </form>
+</form>
     </div>
 </div>
 

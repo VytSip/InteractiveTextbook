@@ -11,6 +11,7 @@ namespace InteractiveTextbook.Data
     {
         public DbSet<Page> Pages { get; set; }
         public DbSet<Textbook> Textbooks { get; set; }
+        public DbSet<PageTimer> PageTimers { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
