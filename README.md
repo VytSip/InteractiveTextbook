@@ -1,4 +1,4 @@
-# InteractiveTextbook
+# Interactive Textbook
 
 # How to run the project
 1. Download source code
